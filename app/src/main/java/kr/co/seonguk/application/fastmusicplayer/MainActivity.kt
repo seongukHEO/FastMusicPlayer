@@ -1,5 +1,6 @@
 package kr.co.seonguk.application.fastmusicplayer
 
+import android.content.Intent
 import android.media.MediaPlayer
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
@@ -8,7 +9,6 @@ import kr.co.seonguk.application.fastmusicplayer.databinding.ActivityMainBinding
 class MainActivity : AppCompatActivity() {
 
     lateinit var binding: ActivityMainBinding
-    private var mediaPlayer : MediaPlayer? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -35,22 +35,25 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun mediaPlayerPlay(){
-        if (mediaPlayer == null){
-            mediaPlayer = MediaPlayer.create(this, R.raw.music_my).apply {
-                isLooping = true
-            }
-            mediaPlayer?.start()
+
+        val intent = Intent(this, MediaPlayerService::class.java).apply {
+            action = MEDIA_PLAYER_PLAY
         }
+        startService(intent)
     }
 
     private fun mediaPlayerPause(){
-        mediaPlayer?.pause()
+        val intent = Intent(this, MediaPlayerService::class.java).apply {
+            action = MEDIA_PLAYER_PAUSE
+        }
+        startService(intent)
     }
 
     private fun mediaPlayerStop(){
-        mediaPlayer?.stop()
-        mediaPlayer?.release()
-        mediaPlayer = null
+        val intent = Intent(this, MediaPlayerService::class.java).apply {
+            action = MEDIA_PLAYER_STOP
+        }
+        startService(intent)
     }
 }
 
